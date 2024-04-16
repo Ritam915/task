@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+const taskdata = localStorage.getItem("listData");
+console.log(taskdata);
 const Todo = () => {
   const [activity, setActivity] = useState("");
-  const [listData, SetListdata] = useState([]);
+  const [listData, SetListdata] = useState(JSON.parse(taskdata));
+  // save tasks using local storage
+  useEffect(() => {
+    localStorage.setItem("listData", JSON.stringify(listData));
+  }, [listData]);
   const eventhandler = (e) => {
     setActivity(e.target.value);
     console.log(activity);
@@ -30,10 +35,11 @@ const Todo = () => {
         <button onClick={handlesubmmit}>ADD </button>
 
         {listData != [] &&
-          listData.map((data, i) => {
+          listData.map((data, index) => {
             return (
               <>
-                <p>{data}</p>
+                {/* {   unique id for each task use index no} */}
+                <p key={index}>{data}</p>
               </>
             );
           })}
